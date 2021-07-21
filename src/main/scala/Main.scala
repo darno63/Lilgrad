@@ -2,7 +2,8 @@ import Utils.CSVReader
 
 @main def hello: Unit = {
   println("Hello world!")
-  Loss.main
+  Gradtest.svmtest()
+  //Loss.main
   //LayerTest //test potential layer folding
   /*
   println(x1.data)

@@ -1,4 +1,5 @@
 package Utils
+import scala.io.Source
 import scala.collection.mutable.ArrayBuffer
 import reflect.Selectable.reflectiveSelectable
 
@@ -7,7 +8,7 @@ object CSVReader {
   val rows = ArrayBuffer[Array[String]]()
 
   // (1) read the csv data
-  using(io.Source.fromFile("datasets/ml_test.csv")) { source =>
+  using(Source.fromFile("datasets/ml_test.csv")) { source =>
     for (line <- source.getLines) {
       rows += line.split(",").map(_.trim)
     }

@@ -6,8 +6,6 @@ import scala.collection.mutable.ArrayBuffer
 class Value(var data: Float, var children: ArrayBuffer[Value]=ArrayBuffer(), var op: String=""):
   var _prev: Set[Value] = children.toSet
   var grad: Float = 0
-  //var _backward = (x: Int) => x
-  //var _backward = (f: Unit) => Unit
   var _backward = () => 1
 
   def +(other1: Value | Float): Value = {
@@ -52,7 +50,7 @@ class Value(var data: Float, var children: ArrayBuffer[Value]=ArrayBuffer(), var
     val out = Value(if this.data < 0 then 0 else this.data, ArrayBuffer(this), "ReLU")
 
     def _backward(): Int = {
-      val res = if (out.data > 0) then out.grad * out.data else 0
+      val res = if (out.data > 0) then out.grad else 0
       this.grad += res
       return 1
     }
