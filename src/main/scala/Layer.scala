@@ -1,8 +1,10 @@
-class Layer(nin: Int, nout: Int) {
-  val neurons: List[Neuron] = (1 to nout).toList.map(e => Neuron(nin))
+class Layer(nin: Int, nout: Int, nonlin: Boolean=true) extends Module {
+  val neurons: Vector[Neuron] = (1 to nout).toVector.map(e => Neuron(nin, nonlin))
+
+  def parameters: Vector[Value] = this.neurons.flatMap(_.parameters)
 
   def apply(x: List[Value]): List[Value] = {
-    val out = this.neurons.map(_(x))
+    val out = this.neurons.map(_(x)).toList
     return out
   }
 

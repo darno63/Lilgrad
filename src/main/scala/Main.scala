@@ -1,18 +1,24 @@
 import Utils.CSVReader
 
 @main def hello: Unit = {
-  println("Hello world!")
-  Gradtest.svmtest()
-  //Loss.main
-  //LayerTest //test potential layer folding
+  //Gradtest.test1()
+  /** Testing on micrograd data */
+  //Learn.optimize(100)
+  //LossTest.test
+  /** Testing on wheat seeds data */
+  val (df, targets) = Learn.data2()
+  val newdf = df.transpose.map(Data.normalize)
+  for i <- (0 until 7) do {
+    println("-------")
+    println(s"min: ${df.transpose.toVector(i).min}, max: ${df.transpose.toVector(i).max}")
+    println(s"None: ${df.transpose.toVector(i).toVector.slice(0,10)}")
+    println(s"Normalized: ${newdf.toVector(i).toVector.slice(0,10)}")
+    //println(newdf.last.toVector(i))
+  }
   /*
-  println(x1.data)
-  println(x2.data)
-  println(x3.data)
-  println(x4.backward())
-  println(x4._backward())
-  println(x4.grad)
-  x4._prev.map(x => print(x.toString + "\n"))
+  val (inputs, targets) = Learn.data()
+  inputs.foreach(_.foreach(println))
+  targets.foreach(println)
    */
 }
 

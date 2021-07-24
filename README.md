@@ -16,6 +16,8 @@ docs - [Scala 2 Building Scala Project with IntelliJ and SBT](https://docs.scala
 
 example library - [BigDL](https://github.com/intel-analytics/BigDL)
 
+[scala-csv](https://github.com/tototoshi/scala-csv)
+
 [tensorflow-scala](https://github.com/eaplatanios/tensorflow_scala)
 
 [relu derivative explanation](https://kawahara.ca/what-is-the-derivative-of-relu/)
