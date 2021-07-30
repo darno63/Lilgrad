@@ -27,12 +27,13 @@ object Learn {
     return  (totalLoss, acc)
   }
 
-  def optimize(epochs: Int) = {
+  def optimize(epochs: Int): Float = {
     /** import data */
     val (inputs, targets) = data()
     /** create model */
     val model = new Network(Vector(2, 16, 16, 1))
 
+    var accuracy: Float = 0
     for k <- (0 until epochs) do {
 
       /** forward */
@@ -47,8 +48,10 @@ object Learn {
       val params = model.parameters
       model.parameters.foreach(p => p.data -= learningRate * p.grad)
 
+      accuracy = acc * 100
       if k % 1 == 0 then println(s"step $k loss ${totalLoss.data}, accuracy ${acc * 100}")
     }
+    return accuracy
   }
 
   def data(): (List[List[Float]], List[Float]) = {

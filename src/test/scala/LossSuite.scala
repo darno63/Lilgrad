@@ -2,6 +2,10 @@ import org.scalatest.funsuite.AnyFunSuite
 import Learn.loss
 
 class LossSuite extends AnyFunSuite {
+  test("run quick NN training") {
+    val acc = Learn.optimize(20)
+    assert(acc > 80)
+  }
 
   test("Simple NN") {
     /** import data */
@@ -16,7 +20,7 @@ class LossSuite extends AnyFunSuite {
 
     /** create model */
     val model = new Network(Vector(2, 4, 4, 1))
-    assert(inputs(0)(0) === 2F)
+    assert(inputs(0)(0) === 1F)
   }
 
   def optimize(model: Network, X: List[List[Float]], y: List[Float], epochs: Int) = {

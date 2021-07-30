@@ -19,4 +19,17 @@ object Gradtest {
       println(name + " - Value: " + i.data.toString + " - Grad: " + i.grad.toString)
     println("----------------")
   }
+
+  def test2() = {
+    val x = Value(0.244)
+    val z = x * 2D + 2D + x
+    val q = z.tanh() + z * x
+    q.backward()
+
+    println("----------------")
+    val iter = Seq(x, z, q) zip Seq("x", "z", "q")
+    for (i, name) <- iter do
+      println(name + " - Value: " + i.data.toString + " - Grad: " + i.grad.toString)
+    println("----------------")
+  }
 }

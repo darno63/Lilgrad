@@ -1,3 +1,4 @@
+import Learn.data
 import Utils.CSVReader
 
 @main def hello: Unit = {
@@ -5,16 +6,27 @@ import Utils.CSVReader
   /** Testing on micrograd data */
   //Learn.optimize(100)
   //LossTest.test
+  /** Testing fit method */
+  def fitTest() =
+    // import data
+    val (inputs, targets) = data()
+    // create model
+    val model = new Network(Vector(2, 16, 16, 1))
+    model.fit(inputs, targets, 20)
+  //fitTest()
+  Gradtest.test2()
+
   /** Testing on wheat seeds data */
-  val (df, targets) = Learn.data2()
-  val newdf = df.transpose.map(Data.normalize)
-  for i <- (0 until 7) do {
-    println("-------")
-    println(s"min: ${df.transpose.toVector(i).min}, max: ${df.transpose.toVector(i).max}")
-    println(s"None: ${df.transpose.toVector(i).toVector.slice(0,10)}")
-    println(s"Normalized: ${newdf.toVector(i).toVector.slice(0,10)}")
-    //println(newdf.last.toVector(i))
-  }
+  def wheattest() =
+    val (df, targets) = Learn.data2()
+    val newdf = df.transpose.map(Data.normalize)
+    for i <- (0 until 7) do {
+      println("-------")
+      println(s"min: ${df.transpose.toVector(i).min}, max: ${df.transpose.toVector(i).max}")
+      println(s"None: ${df.transpose.toVector(i).toVector.slice(0,10)}")
+      println(s"Normalized: ${newdf.toVector(i).toVector.slice(0,10)}")
+      //println(newdf.last.toVector(i))
+    }
   /*
   val (inputs, targets) = Learn.data()
   inputs.foreach(_.foreach(println))

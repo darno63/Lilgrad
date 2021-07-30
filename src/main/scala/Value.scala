@@ -1,15 +1,15 @@
 import scala.collection.mutable.ArrayBuffer
 
 /*
-* @tparam T should be a Double or Float
+* @tparam T should be a Double or Double
  */
-class Value(var data: Float, var children: ArrayBuffer[Value]=ArrayBuffer(), var op: String=""):
+class Value(var data: Double, var children: ArrayBuffer[Value]=ArrayBuffer(), var op: String=""):
   var _prev: Set[Value] = children.toSet
-  var grad: Float = 0
+  var grad: Double = 0
   var _backward = () => 1
 
-  def +(other1: Value | Float): Value = {
-    val other = other1 match { case v: Value => v case f: Float => Value(f) }
+  def +(other1: Value | Double): Value = {
+    val other = other1 match { case v: Value => v case f: Double => Value(f) }
     val out = Value(this.data + other.data, ArrayBuffer(this, other), "+")
 
     def _backward(): Int = {
@@ -21,8 +21,8 @@ class Value(var data: Float, var children: ArrayBuffer[Value]=ArrayBuffer(), var
     return out
   }
 
-  def *(other1: Value | Float): Value = {
-    val other = other1 match { case v: Value => v case f: Float => Value(f) }
+  def *(other1: Value | Double): Value = {
+    val other = other1 match { case v: Value => v case f: Double => Value(f) }
     val out = Value(this.data * other.data, ArrayBuffer(this, other), "*")
 
     def _backward(): Int = {
@@ -34,12 +34,12 @@ class Value(var data: Float, var children: ArrayBuffer[Value]=ArrayBuffer(), var
     return out
   }
 
-  def pow(other1: Value | Float): Value = {
-    val other = other1 match { case v: Value => v case f: Float => Value(f) }
-    val out = Value(math.pow(this.data, other.data).toFloat, ArrayBuffer(this, other), "**")
+  def pow(other1: Value | Double): Value = {
+    val other = other1 match { case v: Value => v case f: Double => Value(f) }
+    val out = Value(math.pow(this.data, other.data), ArrayBuffer(this, other), "**")
 
     def _backward(): Int = {
-      this.grad += other.data * math.pow(this.data, other.data-1).toFloat * out.grad
+      this.grad += other.data * math.pow(this.data, other.data-1) * out.grad
       return 1
     }
     out._backward = _backward
@@ -52,6 +52,18 @@ class Value(var data: Float, var children: ArrayBuffer[Value]=ArrayBuffer(), var
     def _backward(): Int = {
       val res = if (out.data > 0) then out.grad else 0
       this.grad += res
+      return 1
+    }
+    out._backward = _backward
+    return out
+  }
+
+  def tanh(): Value = {
+    val tanh = (math.exp(this.data * 2) - 1) / (math.exp(this.data * 2) + 1)
+    val out = Value(tanh, ArrayBuffer(this), "tanh")
+
+    def _backward(): Int = {
+      this.grad += (1 - math.pow(tanh, 2))
       return 1
     }
     out._backward = _backward
@@ -77,12 +89,12 @@ class Value(var data: Float, var children: ArrayBuffer[Value]=ArrayBuffer(), var
   /** Returns the negation of this value */
   def unary_- = this * -1F
 
-  def -(other1: Value | Float): Value = {
-    val other = other1 match { case v: Value => v case f: Float => Value(f) }
+  def -(other1: Value | Double): Value = {
+    val other = other1 match { case v: Value => v case f: Double => Value(f) }
     return this + (-other)
   }
 
-  def /(other1: Value | Float): Value = {
-    val other = other1 match { case v: Value => v case f: Float => Value(f) }
+  def /(other1: Value | Double): Value = {
+    val other = other1 match { case v: Value => v case f: Double => Value(f) }
     return this * other.pow(-1F)
   }
